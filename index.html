@@ -14,7 +14,6 @@
         img { width: 150px; height: auto; }
         .certificate { border: 3px solid #ff66b2; padding: 20px; background-color: white; display: inline-block; margin-top: 20px; }
         #cert-img { width: 100%; max-width: 400px; }
-        .quiz-container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -41,36 +40,28 @@
             <option value="Sporty">Sporty</option>
         </select>
         <br><br>
+        <label>Pick a personality:</label>
+        <select id="personality">
+            <option value="Cheerful">Cheerful</option>
+            <option value="Caring">Caring</option>
+            <option value="Adventurous">Adventurous</option>
+        </select>
+        <br><br>
         <button onclick="generateFriend()">Generate Friend</button>
         <div class="friend-preview" id="friendDisplay">Your virtual friend will appear here!</div>
         <button onclick="nextSlide('quiz-section')">Next</button>
     </div>
     
-    <div id="quiz-section" class="quiz-section quiz-container">
-        <h2>What Is Your Emotional Strength?</h2>
-        <p>Answer these questions to discover your strength!</p>
-        <form id="quizForm">
-            <p>1. How do you handle stress?</p>
-            <input type="radio" name="q1" value="calm"> I stay calm and think logically.<br>
-            <input type="radio" name="q1" value="emotional"> I get emotional but find solutions.<br>
-            <input type="radio" name="q1" value="avoid"> I try to avoid it.<br><br>
-            
-            <p>2. How do you cheer up a sad friend?</p>
-            <input type="radio" name="q2" value="joke"> I tell them a joke.<br>
-            <input type="radio" name="q2" value="hug"> I give them a hug and listen.<br>
-            <input type="radio" name="q2" value="ignore"> I let them deal with it alone.<br><br>
-            
-            <p>3. What makes you feel strong?</p>
-            <input type="radio" name="q3" value="love"> Love and support from others.<br>
-            <input type="radio" name="q3" value="independent"> Being independent.<br>
-            <input type="radio" name="q3" value="success"> Achieving my goals.<br><br>
-            
-            <button type="button" onclick="evaluateQuiz()">Get My Strength Score</button>
-        </form>
+    <div id="quiz-section" class="quiz-section">
+        <h2>How Heartbroken Are You?</h2>
+        <p>On a scale of 1-10, how sad do you feel?</p>
+        <input type="number" id="sadnessLevel" min="1" max="10">
+        <br><br>
+        <button onclick="evaluateSadness()">See Your Result</button>
     </div>
     
     <div id="result-section" class="result-section">
-        <h2>Your Strength Score</h2>
+        <h2>Your Healing Message</h2>
         <p id="message"></p>
         <button onclick="nextSlide('certificate-section')">Next</button>
     </div>
@@ -81,7 +72,7 @@
             <h3>Certificate of Strength</h3>
             <p>Presented to: <span id="userName">You</span></p>
             <p>For being strong, never giving up, and being truly perfect! 💖</p>
-            <img id="cert-img" src="https://www.bannerbear.com/wp-content/uploads/2021/04/certificate-template.png" alt="Certificate">
+            <img id="cert-img" src="A_certificate_with_a_horizontal_orientation_is_pre.png" alt="Certificate">
         </div>
         <button onclick="alert('Feature coming soon!')">Share</button>
     </div>
@@ -95,22 +86,24 @@
         function generateFriend() {
             let hair = document.getElementById("hairstyle").value;
             let outfit = document.getElementById("outfit").value;
-            let imgSrc = `https://dummyimage.com/150x150/ff66b2/ffffff&text=Anime+Girl`;
-            document.getElementById("friendDisplay").innerHTML = `<p>Your virtual friend has ${hair} hair and wears a ${outfit} outfit!</p><img src='${imgSrc}' alt='Virtual Friend'>`;
+            let personality = document.getElementById("personality").value;
+            let randomNum = Math.floor(Math.random() * 5) + 1;
+            let imgSrc = `https://dummyimage.com/150x150/ff66b2/ffffff&text=Anime+Girl+${randomNum}`;
+            document.getElementById("friendDisplay").innerHTML = `<p>Your virtual friend has ${hair} hair, wears a ${outfit} outfit, and is very ${personality}!</p><img src='${imgSrc}' alt='Virtual Friend'>`;
         }
         
-        function evaluateQuiz() {
-            let score = 0;
-            let answers = document.querySelectorAll("input[type='radio']:checked");
-            answers.forEach(answer => {
-                if (answer.value !== "avoid" && answer.value !== "ignore") {
-                    score++;
-                }
-            });
-            let message = score >= 2 ? "You are strong and resilient! Keep shining!" : "You're learning to be strong, and that’s okay!";
+        function evaluateSadness() {
+            let sadnessLevel = document.getElementById("sadnessLevel").value;
+            let message = "You are loved and appreciated. Keep shining!";
+            if (sadnessLevel > 7) {
+                message = "It’s okay to feel sad sometimes. Remember, you are strong and things will get better!";
+            } else if (sadnessLevel > 4) {
+                message = "You're doing great! Keep taking care of yourself and spreading positivity!";
+            }
             document.getElementById("message").innerText = message;
             nextSlide('result-section');
         }
     </script>
 </body>
 </html>
+
