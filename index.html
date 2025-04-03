@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Friend Creator</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; background-color: #ffe6f2; }
+        h1 { color: #ff66b2; }
+        .container, .quiz-section, .result-section, .certificate-section { display: none; }
+        .active { display: block; }
+        .friend-preview { margin: 20px; padding: 20px; border: 2px dashed #ff66b2; display: inline-block; background-color: white; }
+        button { background-color: #ff66b2; color: white; border: none; padding: 10px 20px; cursor: pointer; }
+        img { width: 150px; height: auto; }
+        .certificate { border: 3px solid #ff66b2; padding: 20px; background-color: white; display: inline-block; margin-top: 20px; }
+        #cert-img { width: 100%; max-width: 400px; }
+        .quiz-container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Welcome! Let's Create Your Virtual Friend</h1>
+    
+    <div id="start-section" class="active">
+        <h2>How are you feeling today?</h2>
+        <button onclick="nextSlide('customization-section')">Start</button>
+    </div>
+    
+    <div id="customization-section" class="container">
+        <h2>Customize Your Virtual Friend</h2>
+        <label>Pick a hairstyle:</label>
+        <select id="hairstyle">
+            <option value="Curly">Curly</option>
+            <option value="Straight">Straight</option>
+            <option value="Wavy">Wavy</option>
+        </select>
+        <br><br>
+        <label>Pick an outfit:</label>
+        <select id="outfit">
+            <option value="Casual">Casual</option>
+            <option value="Fancy">Fancy</option>
+            <option value="Sporty">Sporty</option>
+        </select>
+        <br><br>
+        <button onclick="generateFriend()">Generate Friend</button>
+        <div class="friend-preview" id="friendDisplay">Your virtual friend will appear here!</div>
+        <button onclick="nextSlide('quiz-section')">Next</button>
+    </div>
+    
+    <div id="quiz-section" class="quiz-section quiz-container">
+        <h2>What Is Your Emotional Strength?</h2>
+        <p>Answer these questions to discover your strength!</p>
+        <form id="quizForm">
+            <p>1. How do you handle stress?</p>
+            <input type="radio" name="q1" value="calm"> I stay calm and think logically.<br>
+            <input type="radio" name="q1" value="emotional"> I get emotional but find solutions.<br>
+            <input type="radio" name="q1" value="avoid"> I try to avoid it.<br><br>
+            
+            <p>2. How do you cheer up a sad friend?</p>
+            <input type="radio" name="q2" value="joke"> I tell them a joke.<br>
+            <input type="radio" name="q2" value="hug"> I give them a hug and listen.<br>
+            <input type="radio" name="q2" value="ignore"> I let them deal with it alone.<br><br>
+            
+            <p>3. What makes you feel strong?</p>
+            <input type="radio" name="q3" value="love"> Love and support from others.<br>
+            <input type="radio" name="q3" value="independent"> Being independent.<br>
+            <input type="radio" name="q3" value="success"> Achieving my goals.<br><br>
+            
+            <button type="button" onclick="evaluateQuiz()">Get My Strength Score</button>
+        </form>
+    </div>
+    
+    <div id="result-section" class="result-section">
+        <h2>Your Strength Score</h2>
+        <p id="message"></p>
+        <button onclick="nextSlide('certificate-section')">Next</button>
+    </div>
+    
+    <div id="certificate-section" class="certificate-section">
+        <h2>Your Certificate</h2>
+        <div class="certificate">
+            <h3>Certificate of Strength</h3>
+            <p>Presented to: <span id="userName">You</span></p>
+            <p>For being strong, never giving up, and being truly perfect! 💖</p>
+            <img id="cert-img" src="https://www.bannerbear.com/wp-content/uploads/2021/04/certificate-template.png" alt="Certificate">
+        </div>
+        <button onclick="alert('Feature coming soon!')">Share</button>
+    </div>
+    
+    <script>
+        function nextSlide(sectionId) {
+            document.querySelectorAll('.container, .quiz-section, .result-section, .certificate-section, #start-section').forEach(div => div.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+        }
+        
+        function generateFriend() {
+            let hair = document.getElementById("hairstyle").value;
+            let outfit = document.getElementById("outfit").value;
+            let imgSrc = `https://dummyimage.com/150x150/ff66b2/ffffff&text=Anime+Girl`;
+            document.getElementById("friendDisplay").innerHTML = `<p>Your virtual friend has ${hair} hair and wears a ${outfit} outfit!</p><img src='${imgSrc}' alt='Virtual Friend'>`;
+        }
+        
+        function evaluateQuiz() {
+            let score = 0;
+            let answers = document.querySelectorAll("input[type='radio']:checked");
+            answers.forEach(answer => {
+                if (answer.value !== "avoid" && answer.value !== "ignore") {
+                    score++;
+                }
+            });
+            let message = score >= 2 ? "You are strong and resilient! Keep shining!" : "You're learning to be strong, and that’s okay!";
+            document.getElementById("message").innerText = message;
+            nextSlide('result-section');
+        }
+    </script>
+</body>
+</html>
